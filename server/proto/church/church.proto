@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package church;
+
+option go_package = "github.com/abisalde/go-showcase/server/proto/church";
+
+
+import "google/protobuf/empty.proto";
+
+message Church {
+  string id = 1;
+  string name = 2;
+  string address = 3;
+  string pastor = 4;
+}
+
+message GetChurchRequest {
+  string id = 1;
+}
+
+message GetChurchResponse {
+  Church church = 1;
+}
+
+message ListChurchesRequest {
+    int32 page_size = 1;
+    string page_token = 2;
+}
+
+message ListChurchesResponse {
+    repeated Church churches = 1;
+    string next_page_token = 2;
+}
+
+
+service ChurchService {
+  rpc GetChurch(GetChurchRequest) returns (GetChurchResponse);
+  rpc ListChurches(ListChurchesRequest) returns (ListChurchesResponse);
+  rpc CreateChurch(Church) returns (Church);
+  rpc UpdateChurch(Church) returns (Church);
+  rpc DeleteChurch(GetChurchRequest) returns (google.protobuf.Empty);
+}
