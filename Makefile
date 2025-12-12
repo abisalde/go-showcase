@@ -17,7 +17,7 @@ proto: ## Generate protobuf code
 		--go_out=. \
 		--go-grpc_opt=module=github.com/abisalde/go-showcase \
 		--go-grpc_out=. \
-		./server/proto/church.proto
+		./server/proto/church/church.proto
 	@echo "✅ Protobuf code generated successfully!"
 
 build: ## Build Docker images
