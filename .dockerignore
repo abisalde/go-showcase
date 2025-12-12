@@ -1,0 +1,19 @@
+# Ignore temporary files
+tmp/
+*.log
+
+# Ignore git
+.git/
+.gitignore
+
+# Ignore documentation
+*.md
+LICENSE
+
+# Ignore IDE files
+.vscode/
+.idea/
+
+# Ignore test files
+*_test.go
+testdata/

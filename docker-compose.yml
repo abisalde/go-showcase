@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.grpc.address=:50052"
+      - "--entrypoints.web.address=:80"
+      - "--log.level=DEBUG"
+    ports:
+      - "50052:50052"
+      - "8081:8080"
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - grpc-network
+
+  grpc-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: grpc-server
+    volumes:
+      - .:/app
+      - /app/tmp
+    environment:
+      - GRPC_PORT=50052
+      - TLS_ENABLED=true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grpc-server.rule=Host(`grpc.localhost`)"
+      - "traefik.http.routers.grpc-server.entrypoints=grpc"
+      - "traefik.http.services.grpc-server.loadbalancer.server.port=50052"
+      - "traefik.http.services.grpc-server.loadbalancer.server.scheme=h2c"
+    networks:
+      - grpc-network
+    depends_on:
+      - traefik
+
+  grpc-client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: grpc-client
+    volumes:
+      - .:/app
+      - /app/tmp
+    environment:
+      - GRPC_SERVER_ADDRESS=grpc-server:50052
+      - TLS_ENABLED=true
+    networks:
+      - grpc-network
+    depends_on:
+      - grpc-server
+    stdin_open: true
+    tty: true
+
+networks:
+  grpc-network:
+    driver: bridge

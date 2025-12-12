@@ -1,0 +1,20 @@
+# Client Dockerfile
+FROM golang:1.25-alpine AS base
+
+WORKDIR /app
+
+# Install dependencies
+RUN apk add --no-cache git gcc musl-dev bash
+
+# Install air for hot reload
+RUN go install github.com/air-verse/air@latest
+
+# Copy go mod files
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy the entire project
+COPY . .
+
+# Run air for hot reload
+CMD ["air", "-c", ".air.client.toml"]
