@@ -40,3 +40,9 @@ ssl/*.csr
 # OS
 .DS_Store
 Thumbs.db
+
+
+# Env files
+.env
+.env.local
+.env.*.local
