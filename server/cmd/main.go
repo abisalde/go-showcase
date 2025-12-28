@@ -39,11 +39,18 @@ func main() {
 	tlsEnabled := os.Getenv("TLS_ENABLED")
 	tls := tlsEnabled == "true"
 
-	log.Printf("Is TLS Enabled::: %v", tls)
+	log.Printf("Is TLS Enabled: %v\n", tls)
 
 	if tls {
-		certFile := "./ssl/server.crt"
-		keyFile := "./ssl/server.pem"
+		certFile := os.Getenv("TLS_SERVER_CERT")
+		if certFile == "" {
+			certFile = "/app/ssl/server.crt" // Default for Docker
+		}
+		keyFile := os.Getenv("TLS_SERVER_KEY")
+		if keyFile == "" {
+			keyFile = "/app/ssl/server.pem" // Default for Docker
+		}
+		log.Printf("Loading certificates from: %s and %s\n", certFile, keyFile)
 		creds, sslErr := credentials.NewServerTLSFromFile(certFile, keyFile)
 		if sslErr != nil {
 			log.Fatalf("Failed loading certificates: %v\n", sslErr)

@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   traefik:
     image: traefik:v2.10
@@ -12,9 +10,9 @@ services:
       - "--entrypoints.web.address=:80"
       - "--log.level=DEBUG"
     ports:
-      - "50052:50052"
-      - "8081:8080"
-      - "80:80"
+      - "50052:50052" # gRPC
+      - "8082:8080" # Traefik dashboard
+      - "80:80" # HTTP
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
@@ -31,6 +29,8 @@ services:
     environment:
       - GRPC_PORT=50052
       - TLS_ENABLED=true
+      - TLS_SERVER_CERT=/app/ssl/server.crt
+      - TLS_SERVER_KEY=/app/ssl/server.pem
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grpc-server.rule=Host(`grpc.localhost`)"
@@ -53,6 +53,16 @@ services:
     environment:
       - GRPC_SERVER_ADDRESS=grpc-server:50052
       - TLS_ENABLED=true
+      - CLIENT_PORT=8080
+      - TLS_CA_CERT=/app/ssl/ca.crt
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.graphql.rule=Host(`localhost`) || Host(`127.0.0.1`)"
+      - "traefik.http.routers.graphql.entrypoints=web"
+      - "traefik.http.services.graphql.loadbalancer.server.port=8080"
+      - "traefik.http.services.graphql.loadbalancer.server.scheme=http"
+    ports:
+      - "8080:8080"
     networks:
       - grpc-network
     depends_on:

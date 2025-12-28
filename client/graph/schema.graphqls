@@ -1,0 +1,29 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Church {
+	id: ID!
+	name: String!
+	category: String!
+	address: String!
+	pastor: String!
+	establishedDate: String!
+}
+
+type Query {
+	churches: [Church!]!
+	getChurch(id: ID!): Church
+}
+
+input NewChurch {
+	name: String!
+	category: String!
+	address: String!
+	pastor: String!
+	establishedDate: String!
+}
+
+type Mutation {
+	createChurch(input: NewChurch!): Church!
+}

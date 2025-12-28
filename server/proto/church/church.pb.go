@@ -23,13 +23,15 @@ const (
 )
 
 type Church struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Address       string                 `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
-	Pastor        string                 `protobuf:"bytes,4,opt,name=pastor,proto3" json:"pastor,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Id              string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name            string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Address         string                 `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
+	Pastor          string                 `protobuf:"bytes,4,opt,name=pastor,proto3" json:"pastor,omitempty"`
+	Category        string                 `protobuf:"bytes,5,opt,name=category,proto3" json:"category,omitempty"`
+	EstablishedDate string                 `protobuf:"bytes,6,opt,name=established_date,json=establishedDate,proto3" json:"established_date,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Church) Reset() {
@@ -86,6 +88,20 @@ func (x *Church) GetAddress() string {
 func (x *Church) GetPastor() string {
 	if x != nil {
 		return x.Pastor
+	}
+	return ""
+}
+
+func (x *Church) GetCategory() string {
+	if x != nil {
+		return x.Category
+	}
+	return ""
+}
+
+func (x *Church) GetEstablishedDate() string {
+	if x != nil {
+		return x.EstablishedDate
 	}
 	return ""
 }
@@ -286,12 +302,14 @@ var File_church_church_proto protoreflect.FileDescriptor
 
 const file_church_church_proto_rawDesc = "" +
 	"\n" +
-	"\x13church/church.proto\x12\x06church\x1a\x1bgoogle/protobuf/empty.proto\"^\n" +
+	"\x13church/church.proto\x12\x06church\x1a\x1bgoogle/protobuf/empty.proto\"\xa5\x01\n" +
 	"\x06Church\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x18\n" +
 	"\aaddress\x18\x03 \x01(\tR\aaddress\x12\x16\n" +
-	"\x06pastor\x18\x04 \x01(\tR\x06pastor\"\"\n" +
+	"\x06pastor\x18\x04 \x01(\tR\x06pastor\x12\x1a\n" +
+	"\bcategory\x18\x05 \x01(\tR\bcategory\x12)\n" +
+	"\x10established_date\x18\x06 \x01(\tR\x0festablishedDate\"\"\n" +
 	"\x10GetChurchRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\";\n" +
 	"\x11GetChurchResponse\x12&\n" +

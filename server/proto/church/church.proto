@@ -12,6 +12,8 @@ message Church {
   string name = 2;
   string address = 3;
   string pastor = 4;
+  string category = 5;
+  string established_date = 6;
 }
 
 message GetChurchRequest {
