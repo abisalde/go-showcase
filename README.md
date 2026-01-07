@@ -1,2 +1,8 @@
 # Go Showcase
-This is a Backend Go showcase
+This is a Go Backend ShowCase
+
+
+### Resources
+- gRPC
+- gqlgen
+- ent ORM
